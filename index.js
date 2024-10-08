@@ -1,11 +1,16 @@
 import express from 'express';
 import connect from './db.js';
+import rootRoutes from './src/routes/rootRoutes.js';
 
 // tạo object tổng của express
 const app = express();
 
 // Thêm middlware để convert string về json với API POST và PUT
 app.use(express.json());
+
+// import rootRoutes vào index.js
+app.use(rootRoutes)
+
 
 // viết API hello word
 app.get("/hello-world",(req,res) => {
@@ -27,19 +32,19 @@ app.get("/get-user/:id/:hoTen",(req,res)=> {
   res.send({id,hoTen,queryString,token,authorization});
 })
 
-app.get("/get-user-db", async (req,res) => {
-  const [data] = await connect.query(`
-      SELECT * FROM users
-    `)
-    res.send(data);
-})
+// app.get("/get-user-db", async (req,res) => {
+//   const [data] = await connect.query(`
+//       SELECT * FROM users
+//     `)
+//     res.send(data);
+// })
 
 // lấy body từ API POST (create) và PUT (Update)
-'{ "id": 1,"hoTen": "Halo"}'
-app.post("/create-user",(req,res)=> {
-  let body = req.body
-  res.send(body)
-})
+// '{ "id": 1,"hoTen": "Halo"}'
+// app.post("/create-user",(req,res)=> {
+//   let body = req.body
+//   res.send(body)
+// })
 
 
 app.post("/create-user-db" , async (req,res)=> {
